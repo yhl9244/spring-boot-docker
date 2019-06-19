@@ -1,5 +1,6 @@
 package com.github.springbootdocker.controller;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -18,21 +19,26 @@ import java.net.UnknownHostException;
  * @version 0.0.1
  * @since 0.0.1
  */
+@Slf4j
 @RestController
 public class DockerController {
 
-    @Value("${message}")
-    private String message;
+    @Value("${message:default}")
+    private String mess;
+
+    @Value("${args:default}")
+    private String args;
 
     @GetMapping("/docker")
-    public String getMessage() {
-        return "Meaasges From Docker!:" + message;
+    public String getMess() {
+        log.info("Meaasges From Docker!:{},{}", mess, args);
+        return "Meaasges From Docker!:" + mess + " " + args ;
     }
 
     @PostConstruct
     public void print() throws UnknownHostException {
         InetAddress address = InetAddress.getLocalHost();
-        System.out.println(message + ":" + address.getHostAddress());
+        System.out.println(mess + ":" + address.getHostAddress());
     }
 
 
